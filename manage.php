@@ -39,7 +39,7 @@ if (!isset($_SESSION['logged_in'])) {
         }
     }
 
-    // Form đăng nhập có liên kết trở về trang khác
+    
     echo '
     <main>
       <h2>Manager Login</h2>
@@ -54,28 +54,28 @@ if (!isset($_SESSION['logged_in'])) {
     exit;
 }
 
-// ======= CHỨC NĂNG QUẢN LÝ =======
+
 if (isset($_GET['logout'])) {
     session_destroy();
     header("Location: manage.php");
     exit;
 }
 
-// Xóa EOI
+
 if (isset($_GET['delete'])) {
     $jobRef = mysqli_real_escape_string($conn, $_GET['delete']);
     mysqli_query($conn, "DELETE FROM eoi WHERE jobRef='$jobRef'");
     echo "<p>Deleted all EOIs for job reference $jobRef.</p>";
 }
 
-// Cập nhật status
+
 if (isset($_POST['update_status'])) {
     $id = $_POST['eoi_id'];
     $status = $_POST['status'];
     mysqli_query($conn, "UPDATE eoi SET status='$status' WHERE EOInumber=$id");
 }
 
-// Truy vấn
+
 $sort = $_GET['sort'] ?? 'EOInumber';
 $where = [];
 if (!empty($_GET['jobRef'])) $where[] = "jobRef='" . mysqli_real_escape_string($conn, $_GET['jobRef']) . "'";
