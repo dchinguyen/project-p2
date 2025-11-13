@@ -1,0 +1,139 @@
+<?php
+include("header.inc");
+include("nav.inc");
+require_once("settings.php");
+session_start();
+
+$conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+if (!$conn) { die("<p>Database connection failed.</p>"); }
+
+
+if (!isset($_SESSION['logged_in'])) {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
+        $query = "SELECT * FROM managers WHERE username = ?";
+        $stmt = mysqli_prepare($conn, $query);
+        mysqli_stmt_bind_param($stmt, "s", $username);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $user = mysqli_fetch_assoc($result);
+
+        if ($user) {
+            $now = time();
+            $last_attempt = strtotime($user['last_attempt']);
+            if ($user['login_attempts'] >= 3 && ($now - $last_attempt < 300)) {
+                echo "<main><p class='error'>Account locked for 5 minutes due to too many failed attempts.</p></main>";
+            } elseif (hash('sha256', $password) === $user['password']) {
+                $_SESSION['logged_in'] = true;
+                $_SESSION['username'] = $username;
+                mysqli_query($conn, "UPDATE managers SET login_attempts=0 WHERE username='$username'");
+                header("Location: manage.php");
+                exit;
+            } else {
+                mysqli_query($conn, "UPDATE managers SET login_attempts=login_attempts+1, last_attempt=NOW() WHERE username='$username'");
+                echo "<main><p class='error'>Invalid credentials. Please try again.</p></main>";
+            }
+        } else {
+            echo "<main><p class='error'>User not found.</p></main>";
+        }
+    }
+
+    // Form đăng nhập có liên kết trở về trang khác
+    echo '
+    <main>
+      <h2>Manager Login</h2>
+      <form method="POST" action="manage.php">
+          <label>Username: <input type="text" name="username" required></label><br><br>
+          <label>Password: <input type="password" name="password" required></label><br><br>
+          <input type="submit" name="login" value="Login">
+      </form>
+      <p><a href="index.php">← Back to Home</a></p>
+    </main>';
+    include("footer.inc");
+    exit;
+}
+
+// ======= CHỨC NĂNG QUẢN LÝ =======
+if (isset($_GET['logout'])) {
+    session_destroy();
+    header("Location: manage.php");
+    exit;
+}
+
+// Xóa EOI
+if (isset($_GET['delete'])) {
+    $jobRef = mysqli_real_escape_string($conn, $_GET['delete']);
+    mysqli_query($conn, "DELETE FROM eoi WHERE jobRef='$jobRef'");
+    echo "<p>Deleted all EOIs for job reference $jobRef.</p>";
+}
+
+// Cập nhật status
+if (isset($_POST['update_status'])) {
+    $id = $_POST['eoi_id'];
+    $status = $_POST['status'];
+    mysqli_query($conn, "UPDATE eoi SET status='$status' WHERE EOInumber=$id");
+}
+
+// Truy vấn
+$sort = $_GET['sort'] ?? 'EOInumber';
+$where = [];
+if (!empty($_GET['jobRef'])) $where[] = "jobRef='" . mysqli_real_escape_string($conn, $_GET['jobRef']) . "'";
+if (!empty($_GET['fname'])) $where[] = "fname LIKE '%" . mysqli_real_escape_string($conn, $_GET['fname']) . "%'";
+if (!empty($_GET['lname'])) $where[] = "lname LIKE '%" . mysqli_real_escape_string($conn, $_GET['lname']) . "%'";
+$whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
+
+$query = "SELECT * FROM eoi $whereSQL ORDER BY $sort";
+$result = mysqli_query($conn, $query);
+?>
+
+<main>
+<h2>EOI Management Portal</h2>
+<p>Welcome, <?php echo $_SESSION['username']; ?>! <a href="manage.php?logout=true">Logout</a></p>
+
+<form method="GET" action="manage.php">
+  <input type="text" name="jobRef" placeholder="Job Reference">
+  <input type="text" name="fname" placeholder="First Name">
+  <input type="text" name="lname" placeholder="Last Name">
+  <select name="sort">
+    <option value="EOInumber">Sort by ID</option>
+    <option value="jobRef">Sort by Job Ref</option>
+    <option value="lname">Sort by Last Name</option>
+  </select>
+  <input type="submit" value="Search">
+</form>
+
+<table border="1" cellpadding="8">
+<tr><th>ID</th><th>Job Ref</th><th>Name</th><th>Email</th><th>Status</th><th>Action</th></tr>
+<?php
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        echo "<tr>
+          <td>{$row['EOInumber']}</td>
+          <td>{$row['jobRef']}</td>
+          <td>{$row['fname']} {$row['lname']}</td>
+          <td>{$row['email']}</td>
+          <td>
+            <form method='POST'>
+              <input type='hidden' name='eoi_id' value='{$row['EOInumber']}'>
+              <select name='status'>
+                <option " . ($row['status']=='New'?'selected':'') . ">New</option>
+                <option " . ($row['status']=='Current'?'selected':'') . ">Current</option>
+                <option " . ($row['status']=='Final'?'selected':'') . ">Final</option>
+              </select>
+              <input type='submit' name='update_status' value='Update'>
+            </form>
+          </td>
+          <td><a href='manage.php?delete={$row['jobRef']}'>Delete Job</a></td>
+        </tr>";
+    }
+} else {
+    echo "<tr><td colspan='6'>No EOI records found.</td></tr>";
+}
+?>
+</table>
+
+<p><a href="jobs.php">View Jobs</a> | <a href="about.php">About Team</a> | <a href="enhancements.php">Enhancements</a></p>
+</main>
+
+<?php include("footer.inc"); ?>
