@@ -1,3 +1,4 @@
+<?php
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
   header('Location: apply.php'); exit;
 }
@@ -134,3 +135,4 @@ echo "<!doctype html><html lang='en'><head><meta charset='utf-8'>
       <p>Role: Cloud Engineer (Ref: CE7C1)</p>
       <p><a href='index.php'>Return to Home</a></p>
       </main></body></html>";
+      
