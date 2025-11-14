@@ -7,7 +7,6 @@ session_start();
 $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
 if (!$conn) { die("<p>Database connection failed.</p>"); }
 
-
 if (!isset($_SESSION['logged_in'])) {
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login'])) {
         $username = trim($_POST['username']);
@@ -32,28 +31,25 @@ if (!isset($_SESSION['logged_in'])) {
                 exit;
             } else {
                 mysqli_query($conn, "UPDATE managers SET login_attempts=login_attempts+1, last_attempt=NOW() WHERE username='$username'");
-                echo "<main><p class='error'>Invalid credentials. Please try again.</p></main>";
+                echo "<main><p class='error'>Invalid credentials.</p></main>";
             }
         } else {
             echo "<main><p class='error'>User not found.</p></main>";
         }
     }
 
-    
     echo '
     <main>
-      <h2>Manager Login</h2>
+      <h2>Cloud Engineer Manager Login</h2>
       <form method="POST" action="manage.php">
           <label>Username: <input type="text" name="username" required></label><br><br>
           <label>Password: <input type="password" name="password" required></label><br><br>
           <input type="submit" name="login" value="Login">
       </form>
-      <p><a href="index.php">← Back to Home</a></p>
     </main>';
     include("footer.inc");
     exit;
 }
-
 
 if (isset($_GET['logout'])) {
     session_destroy();
@@ -61,20 +57,17 @@ if (isset($_GET['logout'])) {
     exit;
 }
 
-
 if (isset($_GET['delete'])) {
     $jobRef = mysqli_real_escape_string($conn, $_GET['delete']);
     mysqli_query($conn, "DELETE FROM eoi WHERE jobRef='$jobRef'");
     echo "<p>Deleted all EOIs for job reference $jobRef.</p>";
 }
 
-
 if (isset($_POST['update_status'])) {
     $id = $_POST['eoi_id'];
     $status = $_POST['status'];
     mysqli_query($conn, "UPDATE eoi SET status='$status' WHERE EOInumber=$id");
 }
-
 
 $sort = $_GET['sort'] ?? 'EOInumber';
 $where = [];
@@ -88,11 +81,11 @@ $result = mysqli_query($conn, $query);
 ?>
 
 <main>
-<h2>EOI Management Portal</h2>
+<h2>Cloud Engineer Recruitment – EOI Management</h2>
 <p>Welcome, <?php echo $_SESSION['username']; ?>! <a href="manage.php?logout=true">Logout</a></p>
 
 <form method="GET" action="manage.php">
-  <input type="text" name="jobRef" placeholder="Job Reference">
+  <input type="text" name="jobRef" placeholder="Cloud Job Ref">
   <input type="text" name="fname" placeholder="First Name">
   <input type="text" name="lname" placeholder="Last Name">
   <select name="sort">
@@ -132,8 +125,6 @@ if (mysqli_num_rows($result) > 0) {
 }
 ?>
 </table>
-
-<p><a href="jobs.php">View Jobs</a> | <a href="about.php">About Team</a> | <a href="enhancements.php">Enhancements</a></p>
 </main>
 
 <?php include("footer.inc"); ?>
