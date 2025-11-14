@@ -64,7 +64,7 @@ mysqli_close($conn);
     <h1>Thanks! Your application has been received.</h1>
 
     <p><strong>EOI Number:</strong> <?= (int)$eoi_id ?></p>
-    <p><strong>Role:</strong> Cloud Engineer (Ref: CE7C)</p>
+    <p><strong>Role:</strong> Cloud Engineer (Ref: CE7C1)</p>
 
     <a href="index.php">Return to Home</a>
 </div>
