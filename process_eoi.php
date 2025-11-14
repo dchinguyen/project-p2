@@ -124,6 +124,7 @@ $ok = mysqli_stmt_execute($stmt);
 if (!$ok) { die('Insert failed: '.mysqli_stmt_error($stmt)); }
 
 $eoi_id = mysqli_insert_id($conn);
+?>
 
 echo "<!doctype html><html lang='en'><head><meta charset='utf-8'>
       <meta name='viewport' content='width=device-width, initial-scale=1'>
