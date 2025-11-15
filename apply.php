@@ -12,7 +12,7 @@
   <?php include 'header.inc'; ?>
 
   <main id="main">
-    <h1>Apply — Cloud Engineer (Ref: CE7C1)</h1>
+    <h1>Apply — Cloud Engineer (Ref: CE7C)</h1>
     <p>Please complete all required fields. Server-side validation will run on submit.</p>
 
     <!-- novalidate: we want to exercise server-side checks for Part 2 -->

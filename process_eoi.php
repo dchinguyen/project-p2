@@ -22,7 +22,7 @@ $other    = trim($_POST["other"] ?? "");
 
 $errors = [];
 
-if ($jobRef !== "CE7C") $errors[] = "Invalid job reference.";
+if ($jobRef !== "CE7C1") $errors[] = "Invalid job reference.";
 if (!preg_match('/^[A-Za-z ]{1,20}$/', $first)) $errors[] = "Invalid first name.";
 if (!preg_match('/^[A-Za-z ]{1,20}$/', $last)) $errors[] = "Invalid last name.";
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = "Invalid email.";
