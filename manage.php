@@ -29,7 +29,8 @@ if (!isset($_SESSION['logged_in'])) {
             if ($user['login_attempts'] >= 3 && ($now - $last_attempt < 300)) {
                 echo "<main><p class='error'>Account locked for 5 minutes due to too many failed attempts.</p></main>";
             } 
-            elseif (hash('sha256', $password) === $user['password']) {
+            elseif (hash('sha256', $password) == strtolower($user['password'])) {
+
 
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $username;
