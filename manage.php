@@ -86,10 +86,10 @@ if (isset($_POST['update_status'])) {
     exit;
 }
 
-$jobRef = isset($_GET['jobRef']) ? trim($_GET['jobRef']) : "";
-$fname  = isset($_GET['fname']) ? trim($_GET['fname']) : "";
-$lname  = isset($_GET['lname']) ? trim($_GET['lname']) : "";
-$sort   = isset($_GET['sort']) ? $_GET['sort'] : "EOInumber";
+$jobRef = trim($_GET['jobRef'] ?? "");
+$fname  = trim($_GET['fname'] ?? "");
+$lname  = trim($_GET['lname'] ?? "");
+$sort   = $_GET['sort'] ?? "EOInumber";
 
 $where = [];
 if ($jobRef !== "") $where[] = "jobRef = '" . mysqli_real_escape_string($conn, $jobRef) . "'";
