@@ -136,7 +136,7 @@ $result = mysqli_query($conn, $query);
                 echo "<tr>
                         <td>{$row['EOInumber']}</td>
                         <td>{$row['jobRef']}</td>
-                        <td>{$row['fname']} {$row['lname']}</td>
+                        <td>{$row['firstname']} {$row['lastname']}</td>
                         <td>{$row['email']}</td>
                         <td>
                             <form method='POST' class='status-form'>
