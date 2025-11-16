@@ -22,14 +22,12 @@ if (!isset($_SESSION['logged_in'])) {
         $user = mysqli_fetch_assoc($result);
 
         if ($user) {
-
             $now = time();
             $last_attempt = strtotime($user['last_attempt']);
 
             if ($user['login_attempts'] >= 3 && ($now - $last_attempt < 300)) {
                 echo "<main><p class='error-msg'>Account locked for 5 minutes due to too many failed attempts.</p></main>";
-            }
-            elseif (hash('sha256', $password) == strtolower($user['password'])) {
+            } elseif (hash('sha256', $password) == strtolower($user['password'])) {
 
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $username;
@@ -38,12 +36,10 @@ if (!isset($_SESSION['logged_in'])) {
 
                 header("Location: manage.php");
                 exit;
-
             } else {
                 mysqli_query($conn, "UPDATE managers SET login_attempts = login_attempts + 1, last_attempt = NOW() WHERE username = '$username'");
                 echo "<main><p class='error-msg'>Invalid credentials.</p></main>";
             }
-
         } else {
             echo "<main><p class='error-msg'>User not found.</p></main>";
         }
@@ -80,18 +76,16 @@ if (isset($_POST['update_status'])) {
     mysqli_query($conn, "UPDATE eoi SET status = '$status' WHERE EOInumber = $id");
 }
 
-$sort = $_GET['sort'] ?? 'EOInumber';
-$where = [];
-
 $jobRef = isset($_GET['jobRef']) ? trim($_GET['jobRef']) : "";
 $fname  = isset($_GET['fname']) ? trim($_GET['fname']) : "";
 $lname  = isset($_GET['lname']) ? trim($_GET['lname']) : "";
 $sort   = isset($_GET['sort']) ? $_GET['sort'] : "EOInumber";
 
+$where = [];
+
 if ($jobRef !== "") $where[] = "jobRef = '" . mysqli_real_escape_string($conn, $jobRef) . "'";
 if ($fname  !== "") $where[] = "fname LIKE '%" . mysqli_real_escape_string($conn, $fname) . "%'";
 if ($lname  !== "") $where[] = "lname LIKE '%" . mysqli_real_escape_string($conn, $lname) . "%'";
-
 
 $whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
 $query = "SELECT * FROM eoi $whereSQL ORDER BY $sort";
@@ -128,7 +122,6 @@ $result = mysqli_query($conn, $query);
         <?php
         if (mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
-
                 echo "<tr>
                         <td>{$row['EOInumber']}</td>
                         <td>{$row['jobRef']}</td>
