@@ -1,217 +1,152 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
 body {
-    font-family: "Poppins", sans-serif;
-    background: #f4f6f9;
     margin: 0;
     padding: 0;
-    color: #333;
-}
-
-main {
-    width: 85%;
-    margin: auto;
-    padding: 20px 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: #000;
+    color: #f2f2f2;
 }
 
 header {
-    background: #0275d8;
-    color: white;
-    padding: 25px;
-    text-align: center;
-    font-size: 26px;
-    font-weight: 600;
+    background: #000;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #D4B46A;
+}
+
+header img.logo {
+    height: 70px;
+    margin-right: 20px;
+}
+
+header h1 {
+    font-size: 36px;
+    color: #D4B46A;
+    font-weight: bold;
+    margin: 0;
 }
 
 nav {
-    background: #025aa5;
-    padding: 12px;
-    display: flex;
-    justify-content: center;
-    gap: 30px;
+    background: #111;
+    padding: 10px 40px;
+    border-bottom: 1px solid #D4B46A;
 }
 
 nav a {
-    color: white;
+    color: #D4B46A;
+    font-weight: bold;
     text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
+    margin-right: 20px;
+    transition: 0.3s;
 }
 
 nav a:hover {
-    color: #cfe7ff;
+    color: #fff;
 }
 
-footer {
-    text-align: center;
-    background: #0275d8;
-    color: white;
-    padding: 18px;
-    margin-top: 50px;
-    font-size: 14px;
+main {
+    padding: 40px;
 }
 
-.login-container {
-    text-align: center;
-    margin-top: 60px;
-}
-
-.login-container h2 {
-    font-weight: 600;
+h2 {
+    color: #D4B46A;
+    font-size: 28px;
     margin-bottom: 20px;
 }
 
-.login-form {
-    display: flex;
-    flex-direction: column;
-    width: 320px;
-    margin: auto;
-    gap: 14px;
-}
-
-.input-field,
-input[type=text],
-input[type=password],
-select {
-    padding: 12px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
-
 .btn-primary {
-    padding: 12px 20px;
-    background: #0275d8;
-    color: white;
+    background: #D4B46A;
+    color: #000;
+    padding: 10px 20px;
     border: none;
     border-radius: 6px;
+    font-weight: bold;
     cursor: pointer;
-    font-weight: 500;
-    transition: 0.2s;
+    transition: 0.3s;
 }
 
 .btn-primary:hover {
-    background: #025aa5;
+    background: #e6c57a;
+}
+
+input, select {
+    padding: 12px;
+    border: 1px solid #D4B46A;
+    border-radius: 6px;
+    background: #111;
+    color: #fff;
+}
+
+input::placeholder {
+    color: #888;
+}
+
+.login-container, .search-bar {
+    background: #111;
+    padding: 20px;
+    border: 1px solid #D4B46A;
+    border-radius: 8px;
+    max-width: 500px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+table th {
+    background: #D4B46A;
+    color: #000;
+    padding: 12px;
+    font-size: 16px;
+}
+
+table td {
+    padding: 12px;
+    border-bottom: 1px solid #333;
+    color: #f2f2f2;
+}
+
+tr:nth-child(even) {
+    background: #111;
+}
+
+tr:nth-child(odd) {
+    background: #1a1a1a;
 }
 
 .btn-update {
-    padding: 7px 12px;
-    background: #5cb85c;
-    color: white;
+    background: #D4B46A;
+    color: #000;
+    padding: 8px 12px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 13px;
-    transition: 0.2s;
+    font-weight: bold;
 }
 
 .btn-update:hover {
-    background: #449d44;
+    background: #e6c57a;
 }
 
 .btn-delete {
-    padding: 7px 12px;
-    background: #d9534f;
-    color: white;
-    text-decoration: none;
+    background: #b30000;
+    color: #fff;
+    padding: 8px 12px;
     border-radius: 6px;
-    font-size: 13px;
-    transition: 0.2s;
+    text-decoration: none;
+    font-weight: bold;
 }
 
 .btn-delete:hover {
-    background: #c9302c;
+    background: #ff1a1a;
 }
 
-.search-bar {
-    display: flex;
-    gap: 12px;
-    justify-content: center;
-    margin-bottom: 25px;
-}
-
-.search-bar input,
-.search-bar select {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 14px;
-}
-
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 50px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-.styled-table th {
-    background: #0275d8;
-    color: white;
-    padding: 14px;
-    font-size: 15px;
-}
-
-.styled-table td {
-    padding: 14px;
-    border-bottom: 1px solid #eee;
-    font-size: 14px;
-}
-
-.styled-table tr:nth-child(even) {
-    background: #f9fcff;
-}
-
-.status-form {
-    display: flex;
-    gap: 6px;
-}
-
-.team-section {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 25px;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.team-card {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    width: 280px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+footer {
+    background: #000;
+    border-top: 2px solid #D4B46A;
     text-align: center;
-}
-
-.team-card h3 {
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.job-card {
-    background: white;
-    padding: 25px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-
-.job-card h2 {
-    color: #0275d8;
-    margin-bottom: 15px;
-    font-size: 22px;
-}
-
-.job-card ul li {
-    padding: 6px 0;
-}
-
-.error-msg {
-    text-align: center;
-    color: red;
-    font-weight: bold;
-    font-size: 15px;
+    padding: 20px;
+    color: #aaa;
 }

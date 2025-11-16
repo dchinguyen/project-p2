@@ -11,3 +11,7 @@
     <h1>Project 2 - Job Application Portal</h1>
   </header>
 <link rel="stylesheet" href="styles/style.css">
+<header>
+    <img src="t1_logo_transparent.png" class="logo">
+    <h1>Project 2 – Job Application Portal</h1>
+</header>
