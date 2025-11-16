@@ -83,9 +83,15 @@ if (isset($_POST['update_status'])) {
 $sort = $_GET['sort'] ?? 'EOInumber';
 $where = [];
 
-if (!empty($_GET['jobRef'])) $where[] = "jobRef = '" . mysqli_real_escape_string($conn, $_GET['jobRef']) . "'";
-if (!empty($_GET['fname']))  $where[] = "fname LIKE '%" . mysqli_real_escape_string($conn, $_GET['fname']) . "%'";
-if (!empty($_GET['lname']))  $where[] = "lname LIKE '%" . mysqli_real_escape_string($conn, $_GET['lname']) . "%'";
+$jobRef = isset($_GET['jobRef']) ? trim($_GET['jobRef']) : "";
+$fname  = isset($_GET['fname']) ? trim($_GET['fname']) : "";
+$lname  = isset($_GET['lname']) ? trim($_GET['lname']) : "";
+$sort   = isset($_GET['sort']) ? $_GET['sort'] : "EOInumber";
+
+if ($jobRef !== "") $where[] = "jobRef = '" . mysqli_real_escape_string($conn, $jobRef) . "'";
+if ($fname  !== "") $where[] = "fname LIKE '%" . mysqli_real_escape_string($conn, $fname) . "%'";
+if ($lname  !== "") $where[] = "lname LIKE '%" . mysqli_real_escape_string($conn, $lname) . "%'";
+
 
 $whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
 $query = "SELECT * FROM eoi $whereSQL ORDER BY $sort";
