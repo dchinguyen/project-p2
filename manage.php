@@ -22,7 +22,6 @@ if (!isset($_SESSION['logged_in'])) {
         $user = mysqli_fetch_assoc($result);
 
         if ($user) {
-
             $now = time();
             $last_attempt = strtotime($user['last_attempt']);
 
@@ -30,7 +29,6 @@ if (!isset($_SESSION['logged_in'])) {
                 echo "<main><p class='error-msg'>Account locked for 5 minutes due to too many failed attempts.</p></main>";
             }
             elseif (hash('sha256', $password) == strtolower($user['password'])) {
-
                 $_SESSION['logged_in'] = true;
                 $_SESSION['username'] = $username;
 
@@ -38,14 +36,10 @@ if (!isset($_SESSION['logged_in'])) {
 
                 header("Location: manage.php");
                 exit;
-
             } else {
-                mysqli_query($conn, "UPDATE managers 
-                                     SET login_attempts = login_attempts + 1, last_attempt = NOW() 
-                                     WHERE username = '$username'");
+                mysqli_query($conn, "UPDATE managers SET login_attempts = login_attempts + 1, last_attempt = NOW() WHERE username = '$username'");
                 echo "<main><p class='error-msg'>Invalid credentials.</p></main>";
             }
-
         } else {
             echo "<main><p class='error-msg'>User not found.</p></main>";
         }
@@ -74,47 +68,44 @@ if (isset($_GET['logout'])) {
 if (isset($_GET['delete'])) {
     $id = (int) $_GET['delete'];
     mysqli_query($conn, "DELETE FROM eoi WHERE EOInumber = $id");
-    header("Location: manage.php");
-    exit;
 }
 
 if (isset($_POST['update_status'])) {
     $id = (int) $_POST['eoi_id'];
     $status = $_POST['status'];
     mysqli_query($conn, "UPDATE eoi SET status = '$status' WHERE EOInumber = $id");
-    header("Location: manage.php");
-    exit;
 }
 
-$jobRef = trim($_GET['jobRef'] ?? "");
-$fname  = trim($_GET['fname'] ?? "");
-$lname  = trim($_GET['lname'] ?? "");
-$sort   = $_GET['sort'] ?? "EOInumber";
+$jobRef = isset($_GET['jobRef']) ? trim($_GET['jobRef']) : "";
+$fname  = isset($_GET['fname']) ? trim($_GET['fname']) : "";
+$lname  = isset($_GET['lname']) ? trim($_GET['lname']) : "";
+$sort   = isset($_GET['sort']) ? $_GET['sort'] : "EOInumber";
 
 $where = [];
+
 if ($jobRef !== "") $where[] = "jobRef = '" . mysqli_real_escape_string($conn, $jobRef) . "'";
-if ($fname  !== "") $where[] = "fname LIKE '%" . mysqli_real_escape_string($conn, $fname) . "%'";
-if ($lname  !== "") $where[] = "lname LIKE '%" . mysqli_real_escape_string($conn, $lname) . "%'";
+if ($fname  !== "") $where[] = "firstName LIKE '%" . mysqli_real_escape_string($conn, $fname) . "%'";
+if ($lname  !== "") $where[] = "lastName LIKE '%" . mysqli_real_escape_string($conn, $lname) . "%'";
 
 $whereSQL = $where ? "WHERE " . implode(" AND ", $where) : "";
+
 $query = "SELECT * FROM eoi $whereSQL ORDER BY $sort";
 $result = mysqli_query($conn, $query);
 ?>
 
 <main class="manage-container">
     <h2>EOI Management – Cloud Engineer Recruitment</h2>
-    <p class="welcome">Welcome, <?php echo $_SESSION['username']; ?>! 
-        <a href="manage.php?logout=true" class="logout-link">Logout</a>
-    </p>
+    <p class="welcome">Welcome, <?php echo $_SESSION['username']; ?>!
+    <a href="manage.php?logout=true" class="logout-link">Logout</a></p>
 
     <form method="GET" action="manage.php" class="search-bar">
-        <input type="text" name="jobRef" placeholder="Job Ref" value="<?php echo htmlspecialchars($jobRef); ?>">
-        <input type="text" name="fname" placeholder="First Name" value="<?php echo htmlspecialchars($fname); ?>">
-        <input type="text" name="lname" placeholder="Last Name" value="<?php echo htmlspecialchars($lname); ?>">
+        <input type="text" name="jobRef" placeholder="Job Ref">
+        <input type="text" name="fname" placeholder="First Name">
+        <input type="text" name="lname" placeholder="Last Name">
         <select name="sort">
-            <option value="EOInumber" <?php if ($sort == "EOInumber") echo "selected"; ?>>Sort by ID</option>
-            <option value="jobRef" <?php if ($sort == "jobRef") echo "selected"; ?>>Sort by Job Ref</option>
-            <option value="lname" <?php if ($sort == "lname") echo "selected"; ?>>Sort by Last Name</option>
+            <option value="EOInumber">Sort by ID</option>
+            <option value="jobRef">Sort by Job Ref</option>
+            <option value="lastName">Sort by Last Name</option>
         </select>
         <button type="submit" class="btn-primary">Search</button>
     </form>
@@ -130,13 +121,13 @@ $result = mysqli_query($conn, $query);
         </tr>
 
         <?php
-        if (mysqli_num_rows($result) > 0) {
+        if ($result && mysqli_num_rows($result) > 0) {
             while ($row = mysqli_fetch_assoc($result)) {
 
                 echo "<tr>
                         <td>{$row['EOInumber']}</td>
                         <td>{$row['jobRef']}</td>
-                        <td>{$row['firstname']} {$row['lastname']}</td>
+                        <td>{$row['firstName']} {$row['lastName']}</td>
                         <td>{$row['email']}</td>
                         <td>
                             <form method='POST' class='status-form'>
