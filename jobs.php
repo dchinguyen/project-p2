@@ -1,13 +1,4 @@
 <?php
-/*
- * JOB CONFIGURATION
- * For HR: To edit jobs, change the text in the $jobs array below.
- *
- * To ADD a new job:
- *  1. Copy one of the job blocks (from '[' to the matching '],').
- *  2. Paste it under the last job.
- *  3. Change 'ref', 'title', and the text fields to match the new role.
- */
 
 $jobs = [
   [
@@ -27,11 +18,13 @@ $jobs = [
       "Essential: 2–4 years working with cloud platforms; understanding of networking, security groups, and automation; clear communication.",
       "Preferable: Experience with CI/CD, infrastructure-as-code, and observability tools."
     ],
-
     'reports_to'    => 'Platform Engineering Manager',
     'salary'        => 'Competitive, commensurate with experience',
     'why_love'      =>
       "You’ll work in small squads with autonomy, supportive peers, and modern tooling so you can ship, learn, and improve continuously."
+  ]
+];
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -52,8 +45,7 @@ $jobs = [
       <p>No open positions at the moment.</p>
     <?php else: ?>
       <?php foreach ($jobs as $job): ?>
-        <section class="job"
-                 aria-labelledby="ref-<?php echo htmlspecialchars($job['ref']); ?>">
+        <section class="job" aria-labelledby="ref-<?php echo htmlspecialchars($job['ref']); ?>">
           <h2 id="ref-<?php echo htmlspecialchars($job['ref']); ?>">
             <?php echo htmlspecialchars($job['title']); ?>
             <small>(Ref: <?php echo htmlspecialchars($job['ref']); ?>)</small>
@@ -104,13 +96,3 @@ $jobs = [
           <p>
             <a href="apply.php">
               Apply for <?php echo htmlspecialchars($job['title']); ?> now
-            </a>
-          </p>
-        </section>
-      <?php endforeach; ?>
-    <?php endif; ?>
-  </main>
-
-  <?php include 'footer.inc'; ?>
-</body>
-</html>
