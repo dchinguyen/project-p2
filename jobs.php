@@ -1,87 +1,119 @@
 <?php
-require_once("settings.php");
-
+require_once "settings.php";
 $conn = @mysqli_connect($host, $user, $pwd, $sql_db);
-if (!$conn) {
-    die("Database connection failed.");
+if (!$conn) die("<p>Database connection failed.</p>");
+
+$ref = isset($_GET['ref']) ? trim($_GET['ref']) : "";
+
+$singleJob = null;
+if ($ref !== "") {
+    $r = mysqli_real_escape_string($conn, $ref);
+    $q = mysqli_query($conn, "SELECT * FROM jobs WHERE ref='$r'");
+    if ($q && mysqli_num_rows($q) > 0) {
+        $singleJob = mysqli_fetch_assoc($q);
+    }
 }
 
-$query = "SELECT * FROM jobs ORDER BY ref";
-$result = mysqli_query($conn, $query);
+$allJobs = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
 ?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Group 6 Tech — Jobs</title>
+  <title>Jobs — Group 6 Tech</title>
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body class="jobs">
-  <a class="skip-link" href="#main">Skip to main content</a>
-  <?php include 'header.inc'; ?>
+  <?php include "header.inc"; ?>
 
   <main id="main">
-    <h1>Open Positions</h1>
 
-    <?php if (mysqli_num_rows($result) == 0): ?>
-      <p>No job positions available.</p>
+    <?php if ($singleJob): ?>
+
+      <section class="job-detail">
+        <h1><?php echo htmlspecialchars($singleJob['title']); ?>
+          <small>(Ref: <?php echo htmlspecialchars($singleJob['ref']); ?>)</small>
+        </h1>
+
+        <p class="summary"><?php echo nl2br(htmlspecialchars($singleJob['summary'])); ?></p>
+
+        <?php
+        $resp = json_decode($singleJob['responsibilities'], true);
+        if ($resp && is_array($resp)):
+        ?>
+          <h2>Key Responsibilities</h2>
+          <ul>
+            <?php foreach ($resp as $r): ?>
+              <li><?php echo htmlspecialchars($r); ?></li>
+            <?php endforeach; ?>
+          </ul>
+        <?php endif; ?>
+
+        <?php
+        $req = json_decode($singleJob['requirements'], true);
+        if ($req && is_array($req)):
+        ?>
+          <h2>Requirements</h2>
+          <ol>
+            <?php foreach ($req as $r): ?>
+              <li><?php echo htmlspecialchars($r); ?></li>
+            <?php endforeach; ?>
+          </ol>
+        <?php endif; ?>
+
+        <p>
+          <strong>Reports to:</strong> <?php echo htmlspecialchars($singleJob['reports_to']); ?> •
+          <strong>Salary:</strong> <?php echo htmlspecialchars($singleJob['salary']); ?>
+        </p>
+
+        <?php if (!empty($singleJob['why_love'])): ?>
+          <h2>Why you'll love this role</h2>
+          <p><?php echo nl2br(htmlspecialchars($singleJob['why_love'])); ?></p>
+        <?php endif; ?>
+
+        <p>
+          <a class="button" href="apply.php?ref=<?php echo htmlspecialchars($singleJob['ref']); ?>">
+            Apply now
+          </a>
+          <a class="button button-secondary" href="jobs.php">Back to all jobs</a>
+        </p>
+      </section>
+
     <?php else: ?>
-      <?php while ($job = mysqli_fetch_assoc($result)): ?>
-        <section class="job" aria-labelledby="ref-<?php echo $job['ref']; ?>">
-          <h2 id="ref-<?php echo $job['ref']; ?>">
-            <?php echo htmlspecialchars($job['title']); ?>
-            <small>(Ref: <?php echo htmlspecialchars($job['ref']); ?>)</small>
-          </h2>
 
-          <?php if (!empty($job['summary'])): ?>
-            <p><?php echo nl2br(htmlspecialchars($job['summary'])); ?></p>
-          <?php endif; ?>
+      <h1>Open Positions</h1>
 
-          <?php if (!empty($job['responsibilities'])): ?>
-            <h3>Key Responsibilities</h3>
-            <ul>
-              <?php foreach (explode(";", $job['responsibilities']) as $item): ?>
-                <li><?php echo htmlspecialchars($item); ?></li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
+      <ul class="job-list">
+        <?php while ($job = mysqli_fetch_assoc($allJobs)): ?>
+          <li class="job-card">
+            <h2>
+              <a href="jobs.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
+                <?php echo htmlspecialchars($job['title']); ?>
+              </a>
+            </h2>
 
-          <?php if (!empty($job['requirements'])): ?>
-            <h3>Requirements</h3>
-            <ul>
-              <?php foreach (explode(";", $job['requirements']) as $item): ?>
-                <li><?php echo htmlspecialchars($item); ?></li>
-              <?php endforeach; ?>
-            </ul>
-          <?php endif; ?>
+            <p><?php echo htmlspecialchars(substr($job['summary'], 0, 150)); ?>…</p>
 
-          <p>
-            <?php if (!empty($job['reports_to'])): ?>
-              <strong>Reports to:</strong> <?php echo htmlspecialchars($job['reports_to']); ?>
-            <?php endif; ?>
+            <p class="card-buttons">
+              <a class="button button-small"
+                 href="jobs.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
+                View details
+              </a>
 
-            <?php if (!empty($job['salary'])): ?>
-              &nbsp;•&nbsp;
-              <strong>Salary:</strong> <?php echo htmlspecialchars($job['salary']); ?>
-            <?php endif; ?>
-          </p>
+              <a class="button button-secondary button-small"
+                 href="apply.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
+                Apply now
+              </a>
+            </p>
+          </li>
+        <?php endwhile; ?>
+      </ul>
 
-          <?php if (!empty($job['why_love'])): ?>
-            <h3>Why you’ll love this role</h3>
-            <p><?php echo htmlspecialchars($job['why_love']); ?></p>
-          <?php endif; ?>
-
-          <p>
-            <a href="apply.php?ref=<?php echo $job['ref']; ?>">
-              Apply for <?php echo htmlspecialchars($job['title']); ?>
-            </a>
-          </p>
-        </section>
-      <?php endwhile; ?>
     <?php endif; ?>
+
   </main>
 
-  <?php include 'footer.inc'; ?>
+  <?php include "footer.inc"; ?>
 </body>
 </html>

@@ -150,3 +150,8 @@ footer {
     padding: 20px;
     color: #aaa;
 }
+.card-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
