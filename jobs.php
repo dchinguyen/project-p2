@@ -5,8 +5,8 @@ $jobs = [
     'ref'            => 'CE7C1',
     'title'          => 'Cloud Engineer',
     'summary'        =>
-      "We are hiring a Cloud Engineer to design, automate, and operate secure, reliable cloud infrastructure. " .
-      "You will build reusable platform components, improve observability and incident response, and partner with " .
+      "We’re hiring a Cloud Engineer to design, automate, and operate secure, reliable cloud infrastructure. " .
+      "You’ll build reusable platform components, improve observability and incident response, and partner with " .
       "product teams to ship fast with confidence.",
     'responsibilities' => [
       "Design and maintain scalable cloud infrastructure.",
@@ -15,13 +15,13 @@ $jobs = [
       "Partner with product teams to enable reliable, frequent releases."
     ],
     'requirements' => [
-      "Essential: 2 to 4 years working with cloud platforms; understanding of networking, security groups, and automation; clear communication.",
+      "Essential: 2–4 years working with cloud platforms; understanding of networking, security groups, and automation; clear communication.",
       "Preferable: Experience with CI/CD, infrastructure-as-code, and observability tools."
     ],
     'reports_to'    => 'Platform Engineering Manager',
     'salary'        => 'Competitive, commensurate with experience',
     'why_love'      =>
-      "You will work in small squads with autonomy, supportive peers, and modern tooling so you can ship, learn, and improve continuously."
+      "You’ll work in small squads with autonomy, supportive peers, and modern tooling so you can ship, learn, and improve continuously."
   ]
 ];
 
@@ -96,3 +96,13 @@ $jobs = [
           <p>
             <a href="apply.php">
               Apply for <?php echo htmlspecialchars($job['title']); ?> now
+            </a>
+          </p>
+        </section>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </main>
+
+  <?php include 'footer.inc'; ?>
+</body>
+</html>
