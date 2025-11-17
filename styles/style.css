@@ -12,6 +12,7 @@ header {
     display: flex;
     align-items: center;
     border-bottom: 2px solid #D4B46A;
+    box-shadow: 0 0 15px #ff003c;
 }
 
 header img.logo {
@@ -30,6 +31,7 @@ nav {
     background: #111;
     padding: 10px 40px;
     border-bottom: 1px solid #D4B46A;
+    box-shadow: 0 0 12px #ff003c;
 }
 
 nav a {
@@ -54,39 +56,83 @@ h2 {
     margin-bottom: 20px;
 }
 
-.btn-primary {
-    background: #D4B46A;
-    color: #000;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 6px;
-    font-weight: bold;
-    cursor: pointer;
+a {
+    color: #87CEEB;
+    text-decoration: none;
     transition: 0.3s;
 }
 
-.btn-primary:hover {
-    background: #e6c57a;
+a:hover {
+    color: #f5d76e;
 }
 
-input, select {
+.button-gold {
+    display: inline-block;
+    background: #D4B46A;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-right: 8px;
+    box-shadow: 0 0 8px #ff003c;
+    transition: 0.3s;
+}
+
+.button-gold:hover {
+    background: #f5d76e;
+    box-shadow: 0 0 15px #ff003c;
+}
+
+.button-outline {
+    display: inline-block;
+    border: 2px solid #D4B46A;
+    color: #D4B46A;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.button-outline:hover {
+    border-color: #f5d76e;
+    color: #f5d76e;
+    box-shadow: 0 0 12px #ff003c;
+}
+
+.card-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.job-card {
+    background: #111;
+    padding: 20px;
+    border: 1px solid #D4B46A;
+    border-radius: 10px;
+    margin-bottom: 25px;
+    transition: 0.3s;
+    box-shadow: 0 0 0px #ff003c;
+}
+
+.job-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 18px #ff003c;
+}
+
+input, select, textarea {
     padding: 12px;
     border: 1px solid #D4B46A;
     border-radius: 6px;
     background: #111;
     color: #fff;
+    transition: 0.3s;
 }
 
-input::placeholder {
-    color: #888;
-}
-
-.login-container, .search-bar {
-    background: #111;
-    padding: 20px;
-    border: 1px solid #D4B46A;
-    border-radius: 8px;
-    max-width: 500px;
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    box-shadow: 0 0 12px #ff003c;
+    border-color: #ff003c;
 }
 
 table {
@@ -120,14 +166,16 @@ tr:nth-child(odd) {
     background: #D4B46A;
     color: #000;
     padding: 8px 12px;
-    border: none;
     border-radius: 6px;
     cursor: pointer;
     font-weight: bold;
+    transition: 0.3s;
+    box-shadow: 0 0 8px #ff003c;
 }
 
 .btn-update:hover {
     background: #e6c57a;
+    box-shadow: 0 0 14px #ff003c;
 }
 
 .btn-delete {
@@ -137,10 +185,12 @@ tr:nth-child(odd) {
     border-radius: 6px;
     text-decoration: none;
     font-weight: bold;
+    transition: 0.3s;
 }
 
 .btn-delete:hover {
     background: #ff1a1a;
+    box-shadow: 0 0 14px #ff003c;
 }
 
 footer {
@@ -149,48 +199,5 @@ footer {
     text-align: center;
     padding: 20px;
     color: #aaa;
-}
-
-.card-buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 10px;
-}
-
-a {
-    color: #D4B46A;
-    text-decoration: none;
-}
-
-a:hover {
-    color: #f5d76e;
-}
-
-.button-gold {
-    display: inline-block;
-    background: #D4B46A;
-    color: #000;
-    padding: 8px 16px;
-    border-radius: 6px;
-    font-weight: bold;
-    margin-right: 8px;
-}
-
-.button-gold:hover {
-    background: #f5d76e;
-    color: #000;
-}
-
-.button-outline {
-    display: inline-block;
-    border: 2px solid #D4B46A;
-    color: #D4B46A;
-    padding: 7px 14px;
-    border-radius: 6px;
-    font-weight: bold;
-}
-
-.button-outline:hover {
-    border-color: #f5d76e;
-    color: #f5d76e;
+    box-shadow: 0 0 15px #ff003c;
 }

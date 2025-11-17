@@ -4,7 +4,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-include 'settings.php';
+require_once "settings.php";
+$conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+if (!$conn) die("<p>Database connection failed.</p>");
 
 $jobRef   = trim($_POST['jobRef']);
 $first    = trim($_POST['firstName']);
@@ -22,7 +24,14 @@ $other    = trim($_POST['other']);
 
 $errors = [];
 
-if ($jobRef !== 'CE7C1') $errors[] = 'Invalid job reference.';
+$ref = mysqli_real_escape_string($conn, $jobRef);
+$checkJob = mysqli_query($conn, "SELECT * FROM jobs WHERE ref='$ref'");
+if (!$checkJob || mysqli_num_rows($checkJob) == 0) {
+    $errors[] = "Invalid job reference.";
+} else {
+    $job = mysqli_fetch_assoc($checkJob);
+}
+
 if (!preg_match('/^[A-Za-z]{1,20}$/', $first)) $errors[] = 'Invalid first name.';
 if (!preg_match('/^[A-Za-z]{1,20}$/', $last)) $errors[] = 'Invalid last name.';
 if (!preg_match('#^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/[0-9]{4}$#', $dob)) $errors[] = 'Invalid DOB.';
@@ -34,11 +43,13 @@ if (!preg_match('/^[0-9]{4}$/', $postcode)) $errors[] = 'Invalid postcode.';
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errors[] = 'Invalid email.';
 if (!preg_match('/^[0-9 ]{8,12}$/', $phone)) $errors[] = 'Invalid phone.';
 if (!is_array($skills) || count($skills) < 1) $errors[] = 'Select at least one skill.';
+
 if ($errors) {
     http_response_code(422);
+    echo "<main style='width:60%;margin:auto;padding:20px;background:#fff;border:1px solid #ddd;border-radius:8px'>";
     echo "<h2>Errors:</h2><ul>";
     foreach ($errors as $e) echo "<li>$e</li>";
-    echo "</ul><a href='apply.php'>Back</a>";
+    echo "</ul><a href='apply.php'>Back</a></main>";
     exit;
 }
 
@@ -62,15 +73,13 @@ mysqli_stmt_bind_param($stmt, 'sssssssssssiiiss',
 );
 
 mysqli_stmt_execute($stmt);
-
 $eoi_id = mysqli_insert_id($conn);
 
 echo "
 <main style='width:60%;margin:auto;padding:20px;background:#fff;border:1px solid #ddd;border-radius:8px'>
-<h2>Thank you! Your EOI has been submitted.</h2>
+<h2>Thank you! Your EOI has been submitted😀😀😀.</h2>
 <p><strong>EOI Number:</strong> $eoi_id</p>
-<p><strong>Role:</strong> Cloud Engineer (Ref: CE7C1)</p>
+<p><strong>Role:</strong> ".htmlspecialchars($job['title'])." (Ref: ".htmlspecialchars($job['ref']).")</p>
 <a href='index.php'>Return to Home</a>
-</main>
-";
+</main>";
 ?>

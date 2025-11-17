@@ -5,6 +5,7 @@ if (!$conn) die("<p>Database connection failed.</p>");
 
 $jobRef = isset($_GET['ref']) ? trim($_GET['ref']) : "";
 
+// Get selected job if ref is provided
 $job = null;
 if ($jobRef !== "") {
     $ref = mysqli_real_escape_string($conn, $jobRef);
@@ -14,6 +15,7 @@ if ($jobRef !== "") {
     }
 }
 
+// Load all jobs for dropdown
 $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
 ?>
 <!doctype html>
@@ -45,12 +47,14 @@ $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
           <td>
             <select id="jobRef" name="jobRef" required>
               <option value="">-- Select job --</option>
+              
               <?php while ($j = mysqli_fetch_assoc($jobList)): ?>
                 <option value="<?php echo htmlspecialchars($j['ref']); ?>"
                   <?php if ($job && $job['ref'] == $j['ref']) echo "selected"; ?>>
                   <?php echo htmlspecialchars($j['ref']); ?> — <?php echo htmlspecialchars($j['title']); ?>
                 </option>
               <?php endwhile; ?>
+
             </select>
           </td>
         </tr>
@@ -59,6 +63,7 @@ $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
         <tr><th>First name *</th><td><input name="firstName" maxlength="20" required></td></tr>
         <tr><th>Last name *</th><td><input name="lastName" maxlength="20" required></td></tr>
         <tr><th>Date of birth *</th><td><input name="dob" placeholder="dd/mm/yyyy" required></td></tr>
+
         <tr>
           <th>Gender *</th>
           <td>
@@ -71,6 +76,7 @@ $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
         <tr><th colspan="2">Address</th></tr>
         <tr><th>Street *</th><td><input name="street" maxlength="40" required></td></tr>
         <tr><th>Suburb *</th><td><input name="suburb" maxlength="40" required></td></tr>
+
         <tr>
           <th>State *</th>
           <td>
@@ -87,6 +93,7 @@ $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
             </select>
           </td>
         </tr>
+
         <tr><th>Postcode *</th><td><input name="postcode" maxlength="4" required></td></tr>
 
         <tr><th colspan="2">Contact</th></tr>
