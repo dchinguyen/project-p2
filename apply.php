@@ -1,10 +1,15 @@
-
+<?php
+$job = [
+  'ref'   => 'CE7C1',
+  'title' => 'Cloud Engineer'
+];
+?>
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Apply — Cloud Engineer at Group 6 Tech</title>
+  <title>Apply — <?php echo htmlspecialchars($job['title']); ?> at Group 6 Tech</title>
   <link rel="stylesheet" href="styles/styles.css">
 </head>
 <body class="apply">
@@ -12,104 +17,133 @@
   <?php include 'header.inc'; ?>
 
   <main id="main">
-    <h1>Apply — Cloud Engineer (Ref: CE7C)</h1>
+    <h1>
+      Apply — <?php echo htmlspecialchars($job['title']); ?>
+      (Ref: <?php echo htmlspecialchars($job['ref']); ?>)
+    </h1>
     <p>Please complete all required fields. Server-side validation will run on submit.</p>
 
     <!-- novalidate: we want to exercise server-side checks for Part 2 -->
     <form class="app-form" action="process_eoi.php" method="post" novalidate="novalidate">
-      <fieldset class="section" aria-labelledby="job-details-h">
-        <legend id="job-details-h">Job Details</legend>
-        <label for="jobRef">Job reference *</label>
-        <select id="jobRef" name="jobRef" required>
-          <option value="CE7C1">CE7C1 — Cloud Engineer</option>
-        </select>
-      </fieldset>
-
-      <fieldset class="section" aria-labelledby="personal-h">
-        <legend id="personal-h">Personal Information</legend>
-        <div class="grid-2">
-          <div>
-            <label for="firstName">First name *</label>
-            <input id="firstName" name="firstName" maxlength="20" required>
-          </div>
-          <div>
-            <label for="lastName">Last name *</label>
-            <input id="lastName" name="lastName" maxlength="20" required>
-          </div>
-          <div>
-            <label for="dob">Date of birth (dd/mm/yyyy) *</label>
-            <input id="dob" name="dob" placeholder="dd/mm/yyyy" required>
-          </div>
-          <div>
-            <fieldset>
-              <legend>Gender *</legend>
-              <label><input type="radio" name="gender" value="female" required> Female</label>
-              <label><input type="radio" name="gender" value="male"> Male</label>
-              <label><input type="radio" name="gender" value="other"> Other</label>
-            </fieldset>
-          </div>
-        </div>
-      </fieldset>
-
-      <fieldset class="section" aria-labelledby="address-h">
-        <legend id="address-h">Address</legend>
-        <label for="street">Street address *</label>
-        <input id="street" name="street" maxlength="40" required>
-
-        <div class="grid-3">
-          <div>
-            <label for="suburb">Suburb/Town *</label>
-            <input id="suburb" name="suburb" maxlength="40" required>
-          </div>
-          <div>
-            <label for="state">State *</label>
-            <select id="state" name="state" required>
-              <option>VIC</option><option>NSW</option><option>QLD</option><option>NT</option>
-              <option>WA</option><option>SA</option><option>TAS</option><option>ACT</option>
+      <table class="form-table" border="1" cellpadding="6" cellspacing="0">
+        <!-- Job details -->
+        <tr>
+          <th colspan="2" style="text-align:left">Job Details</th>
+        </tr>
+        <tr>
+          <th><label for="jobRef">Job reference *</label></th>
+          <td>
+            <select id="jobRef" name="jobRef" required>
+              <!-- If you add more jobs later, just add more <option> here -->
+              <option value="<?php echo htmlspecialchars($job['ref']); ?>">
+                <?php echo htmlspecialchars($job['ref']); ?> — <?php echo htmlspecialchars($job['title']); ?>
+              </option>
             </select>
-          </div>
-          <div>
-            <label for="postcode">Postcode (4 digits) *</label>
-            <input id="postcode" name="postcode" maxlength="4" required>
-          </div>
-        </div>
-      </fieldset>
+          </td>
+        </tr>
 
-      <fieldset class="section" aria-labelledby="contact-h">
-        <legend id="contact-h">Contact</legend>
-        <div class="grid-2">
-          <div>
-            <label for="email">Email *</label>
-            <input id="email" name="email" required>
-          </div>
-          <div>
-            <label for="phone">Phone (8–12 digits or spaces) *</label>
-            <input id="phone" name="phone" required>
-          </div>
-        </div>
-      </fieldset>
+        <!-- Personal information -->
+        <tr>
+          <th colspan="2" style="text-align:left">Personal Details</th>
+        </tr>
+        <tr>
+          <th><label for="firstName">First name *</label></th>
+          <td><input id="firstName" name="firstName" maxlength="20" required></td>
+        </tr>
+        <tr>
+          <th><label for="lastName">Last name *</label></th>
+          <td><input id="lastName" name="lastName" maxlength="20" required></td>
+        </tr>
+        <tr>
+          <th><label for="dob">Date of birth (dd/mm/yyyy) *</label></th>
+          <td><input id="dob" name="dob" placeholder="dd/mm/yyyy" required></td>
+        </tr>
+        <tr>
+          <th>Gender *</th>
+          <td>
+            <label><input type="radio" name="gender" value="female" required> Female</label>
+            <label><input type="radio" name="gender" value="male"> Male</label>
+            <label><input type="radio" name="gender" value="other"> Other</label>
+          </td>
+        </tr>
 
-      <fieldset class="section" aria-labelledby="skills-h">
-        <legend id="skills-h">Skills</legend>
-        <fieldset>
-          <legend>Required technical skills *</legend>
-          <div class="checkboxes">
-            <label><input type="checkbox" name="skills[]" value="html"> HTML</label>
-            <label><input type="checkbox" name="skills[]" value="css"> CSS</label>
-            <label><input type="checkbox" name="skills[]" value="git"> Git</label>
-            <label><input type="checkbox" name="skills[]" value="ux"> Accessibility/UX</label>
-          </div>
-        </fieldset>
+        <!-- Address -->
+        <tr>
+          <th colspan="2" style="text-align:left">Address</th>
+        </tr>
+        <tr>
+          <th><label for="street">Street address *</label></th>
+          <td><input id="street" name="street" maxlength="40" required></td>
+        </tr>
+        <tr>
+          <th><label for="suburb">Suburb/Town *</label></th>
+          <td><input id="suburb" name="suburb" maxlength="40" required></td>
+        </tr>
+        <tr>
+          <th><label for="state">State *</label></th>
+          <td>
+            <select id="state" name="state" required>
+              <option value="">-- Select --</option>
+              <option value="VIC">VIC</option>
+              <option value="NSW">NSW</option>
+              <option value="QLD">QLD</option>
+              <option value="NT">NT</option>
+              <option value="WA">WA</option>
+              <option value="SA">SA</option>
+              <option value="TAS">TAS</option>
+              <option value="ACT">ACT</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="postcode">Postcode (4 digits) *</label></th>
+          <td><input id="postcode" name="postcode" maxlength="4" required></td>
+        </tr>
 
-        <label for="other">Other skills (optional)</label>
-        <textarea id="other" name="other" rows="5" cols="40"
-                  placeholder="Briefly describe any additional skills or experience…"></textarea>
-      </fieldset>
+        <!-- Contact -->
+        <tr>
+          <th colspan="2" style="text-align:left">Contact</th>
+        </tr>
+        <tr>
+          <th><label for="email">Email *</label></th>
+          <td><input id="email" name="email" required></td>
+        </tr>
+        <tr>
+          <th><label for="phone">Phone *</label></th>
+          <td><input id="phone" name="phone" required></td>
+        </tr>
 
-      <p class="form-actions">
-        <button type="submit">Apply</button>
-        <button type="reset">Clear form</button>
-      </p>
+        <!-- Skills -->
+        <tr>
+          <th colspan="2" style="text-align:left">Technical Skills</th>
+        </tr>
+        <tr>
+          <th>Required technical skills *</th>
+          <td>
+            <div class="checkboxes">
+              <label><input type="checkbox" name="skills[]" value="html"> HTML</label>
+              <label><input type="checkbox" name="skills[]" value="css"> CSS</label>
+              <label><input type="checkbox" name="skills[]" value="git"> Git</label>
+              <label><input type="checkbox" name="skills[]" value="ux"> Accessibility/UX</label>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <th><label for="other">Other skills (optional)</label></th>
+          <td>
+            <textarea id="other" name="other" rows="5" cols="40"
+              placeholder="Briefly describe any additional skills or experience…"></textarea>
+          </td>
+        </tr>
+
+        <!-- Actions -->
+        <tr>
+          <td colspan="2" style="text-align:center">
+            <button type="submit">Apply</button>
+            <button type="reset">Clear form</button>
+          </td>
+        </tr>
+      </table>
     </form>
   </main>
 
