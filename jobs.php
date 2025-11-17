@@ -1,30 +1,13 @@
 <?php
+require_once("settings.php");
 
-$jobs = [
-  [
-    'ref'            => 'CE7C1',
-    'title'          => 'Cloud Engineer',
-    'summary'        =>
-      "We’re hiring a Cloud Engineer to design, automate, and operate secure, reliable cloud infrastructure. " .
-      "You’ll build reusable platform components, improve observability and incident response, and partner with " .
-      "product teams to ship fast with confidence.",
-    'responsibilities' => [
-      "Design and maintain scalable cloud infrastructure.",
-      "Build reusable platform components that other teams can adopt.",
-      "Set up monitoring, logging, alerting, and meaningful SLOs.",
-      "Partner with product teams to enable reliable, frequent releases."
-    ],
-    'requirements' => [
-      "Essential: 2–4 years working with cloud platforms; understanding of networking, security groups, and automation; clear communication.",
-      "Preferable: Experience with CI/CD, infrastructure-as-code, and observability tools."
-    ],
-    'reports_to'    => 'Platform Engineering Manager',
-    'salary'        => 'Competitive, commensurate with experience',
-    'why_love'      =>
-      "You’ll work in small squads with autonomy, supportive peers, and modern tooling so you can ship, learn, and improve continuously."
-  ]
-];
+$conn = @mysqli_connect($host, $user, $pwd, $sql_db);
+if (!$conn) {
+    die("Database connection failed.");
+}
 
+$query = "SELECT * FROM jobs ORDER BY ref";
+$result = mysqli_query($conn, $query);
 ?>
 <!doctype html>
 <html lang="en">
@@ -41,26 +24,24 @@ $jobs = [
   <main id="main">
     <h1>Open Positions</h1>
 
-    <?php if (empty($jobs)): ?>
-      <p>No open positions at the moment.</p>
+    <?php if (mysqli_num_rows($result) == 0): ?>
+      <p>No job positions available.</p>
     <?php else: ?>
-      <?php foreach ($jobs as $job): ?>
-        <section class="job" aria-labelledby="ref-<?php echo htmlspecialchars($job['ref']); ?>">
-          <h2 id="ref-<?php echo htmlspecialchars($job['ref']); ?>">
+      <?php while ($job = mysqli_fetch_assoc($result)): ?>
+        <section class="job" aria-labelledby="ref-<?php echo $job['ref']; ?>">
+          <h2 id="ref-<?php echo $job['ref']; ?>">
             <?php echo htmlspecialchars($job['title']); ?>
             <small>(Ref: <?php echo htmlspecialchars($job['ref']); ?>)</small>
           </h2>
 
           <?php if (!empty($job['summary'])): ?>
-            <p class="summary">
-              <?php echo nl2br(htmlspecialchars($job['summary'])); ?>
-            </p>
+            <p><?php echo nl2br(htmlspecialchars($job['summary'])); ?></p>
           <?php endif; ?>
 
           <?php if (!empty($job['responsibilities'])): ?>
             <h3>Key Responsibilities</h3>
             <ul>
-              <?php foreach ($job['responsibilities'] as $item): ?>
+              <?php foreach (explode(";", $job['responsibilities']) as $item): ?>
                 <li><?php echo htmlspecialchars($item); ?></li>
               <?php endforeach; ?>
             </ul>
@@ -68,23 +49,21 @@ $jobs = [
 
           <?php if (!empty($job['requirements'])): ?>
             <h3>Requirements</h3>
-            <ol>
-              <?php foreach ($job['requirements'] as $item): ?>
+            <ul>
+              <?php foreach (explode(";", $job['requirements']) as $item): ?>
                 <li><?php echo htmlspecialchars($item); ?></li>
               <?php endforeach; ?>
-            </ol>
+            </ul>
           <?php endif; ?>
 
           <p>
             <?php if (!empty($job['reports_to'])): ?>
-              <strong>Reports to:</strong>
-              <?php echo htmlspecialchars($job['reports_to']); ?>
+              <strong>Reports to:</strong> <?php echo htmlspecialchars($job['reports_to']); ?>
             <?php endif; ?>
 
             <?php if (!empty($job['salary'])): ?>
               &nbsp;•&nbsp;
-              <strong>Salary:</strong>
-              <?php echo htmlspecialchars($job['salary']); ?>
+              <strong>Salary:</strong> <?php echo htmlspecialchars($job['salary']); ?>
             <?php endif; ?>
           </p>
 
@@ -94,12 +73,12 @@ $jobs = [
           <?php endif; ?>
 
           <p>
-            <a href="apply.php">
-              Apply for <?php echo htmlspecialchars($job['title']); ?> now
+            <a href="apply.php?ref=<?php echo $job['ref']; ?>">
+              Apply for <?php echo htmlspecialchars($job['title']); ?>
             </a>
           </p>
         </section>
-      <?php endforeach; ?>
+      <?php endwhile; ?>
     <?php endif; ?>
   </main>
 
