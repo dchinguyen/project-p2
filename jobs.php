@@ -32,11 +32,14 @@ $allJobs = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
     <?php if ($singleJob): ?>
 
       <section class="job-detail">
-        <h1><?php echo htmlspecialchars($singleJob['title']); ?>
+        <h1>
+          <?php echo htmlspecialchars($singleJob['title']); ?>
           <small>(Ref: <?php echo htmlspecialchars($singleJob['ref']); ?>)</small>
         </h1>
 
-        <p class="summary"><?php echo nl2br(htmlspecialchars($singleJob['summary'])); ?></p>
+        <p class="summary">
+          <?php echo nl2br(htmlspecialchars($singleJob['summary'])); ?>
+        </p>
 
         <?php
         $resp = json_decode($singleJob['responsibilities'], true);
@@ -63,8 +66,11 @@ $allJobs = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
         <?php endif; ?>
 
         <p>
-          <strong>Reports to:</strong> <?php echo htmlspecialchars($singleJob['reports_to']); ?> •
-          <strong>Salary:</strong> <?php echo htmlspecialchars($singleJob['salary']); ?>
+          <strong>Reports to:</strong> 
+          <?php echo htmlspecialchars($singleJob['reports_to']); ?> 
+          • 
+          <strong>Salary:</strong> 
+          <?php echo htmlspecialchars($singleJob['salary']); ?>
         </p>
 
         <?php if (!empty($singleJob['why_love'])): ?>
@@ -72,11 +78,16 @@ $allJobs = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
           <p><?php echo nl2br(htmlspecialchars($singleJob['why_love'])); ?></p>
         <?php endif; ?>
 
-        <p>
-          <a class="button" href="apply.php?ref=<?php echo htmlspecialchars($singleJob['ref']); ?>">
+        <p class="card-buttons">
+          <a class="button-gold"
+             href="apply.php?ref=<?php echo htmlspecialchars($singleJob['ref']); ?>">
             Apply now
           </a>
-          <a class="button button-secondary" href="jobs.php">Back to all jobs</a>
+
+          <a class="button-outline"
+             href="jobs.php">
+            Back to all jobs
+          </a>
         </p>
       </section>
 
@@ -87,25 +98,32 @@ $allJobs = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
       <ul class="job-list">
         <?php while ($job = mysqli_fetch_assoc($allJobs)): ?>
           <li class="job-card">
+
             <h2>
-              <a href="jobs.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
-                <?php echo htmlspecialchars($job['title']); ?>
+              <a class="job-title"
+                 href="jobs.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
+                 <?php echo htmlspecialchars($job['title']); ?>
               </a>
             </h2>
 
-            <p><?php echo htmlspecialchars(substr($job['summary'], 0, 150)); ?>…</p>
+            <p>
+              <?php echo htmlspecialchars(substr($job['summary'], 0, 150)); ?>…
+            </p>
 
-            <p class="card-buttons">
-              <a class="button button-small"
+            <div class="card-buttons">
+
+              <a class="button-gold"
                  href="jobs.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
                 View details
               </a>
 
-              <a class="button button-secondary button-small"
+              <a class="button-outline"
                  href="apply.php?ref=<?php echo htmlspecialchars($job['ref']); ?>">
                 Apply now
               </a>
-            </p>
+
+            </div>
+
           </li>
         <?php endwhile; ?>
       </ul>

@@ -150,8 +150,47 @@ footer {
     padding: 20px;
     color: #aaa;
 }
+
 .card-buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+a {
+    color: #D4B46A;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #f5d76e;
+}
+
+.button-gold {
+    display: inline-block;
+    background: #D4B46A;
+    color: #000;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-weight: bold;
+    margin-right: 8px;
+}
+
+.button-gold:hover {
+    background: #f5d76e;
+    color: #000;
+}
+
+.button-outline {
+    display: inline-block;
+    border: 2px solid #D4B46A;
+    color: #D4B46A;
+    padding: 7px 14px;
+    border-radius: 6px;
+    font-weight: bold;
+}
+
+.button-outline:hover {
+    border-color: #f5d76e;
+    color: #f5d76e;
 }
