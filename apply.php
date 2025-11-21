@@ -5,7 +5,6 @@ if (!$conn) die("<p>Database connection failed.</p>");
 
 $jobRef = isset($_GET['ref']) ? trim($_GET['ref']) : "";
 
-// Get selected job if ref is provided
 $job = null;
 if ($jobRef !== "") {
     $ref = mysqli_real_escape_string($conn, $jobRef);
@@ -15,7 +14,6 @@ if ($jobRef !== "") {
     }
 }
 
-// Load all jobs for dropdown
 $jobList = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
 ?>
 <!doctype html>
