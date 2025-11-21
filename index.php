@@ -15,16 +15,15 @@ $result = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
 </head>
 <body class="home">
   <a class="skip-link" href="#main">Skip to main content</a>
-  <p style="margin-top:30px;">
-    <a class="button-gold" href="manage.php">Management Login</a>
-</p>
   <?php 
 include("header.inc");
 include("nav.inc");
 ?>
 
 
-
+<p style="margin-top:30px;">
+    <a class="button-gold" href="manage.php">Management Login</a>
+</p>
 
   <main id="main">
 
