@@ -116,6 +116,7 @@ $result = mysqli_query($conn, $query);
             <th>Job Ref</th>
             <th>Name</th>
             <th>Email</th>
+            <th>Phone</th>
             <th>Status</th>
             <th>Action</th>
         </tr>
