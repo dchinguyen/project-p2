@@ -17,6 +17,10 @@ $result = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
   <a class="skip-link" href="#main">Skip to main content</a>
   <?php include 'header.inc'; ?>
 
+<p style="margin-top:30px;">
+    <a class="button-gold" href="manage.php">Management Login</a>
+</p>
+
   <main id="main">
 
     <section class="hero" aria-labelledby="hero-title">
@@ -59,9 +63,6 @@ $result = mysqli_query($conn, "SELECT * FROM jobs ORDER BY ref");
         <?php endwhile; ?>
       </ul>
     </section>
-<p style="margin-top:30px;">
-    <a class="button-gold" href="manage.php">Management Login</a>
-</p>
 
     <aside aria-labelledby="contact-quick">
       <h2 id="contact-quick">Quick contact</h2>
