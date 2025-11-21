@@ -118,7 +118,6 @@ $result = mysqli_query($conn, $query);
             <th>Email</th>
             <th>Phone</th>
             <th>Status</th>
-            <th>Action</th>
         </tr>
 
         <?php
