@@ -18,13 +18,19 @@ header {
 header img.logo {
     height: 70px;
     margin-right: 20px;
-    padding: 6px;
     border-radius: 12px;
-    background: linear-gradient(90deg, #D4B46A, #ff003c, #D4B46A);
-    background-size: 200%;
-    animation: borderMove 3s linear infinite;
-    box-shadow: 0 0 15px #ff003c;
+    padding: 0;
+    background: none;
+    box-shadow: 0 0 8px #D4B46A;
+    transition: 0.3s ease;
 }
+
+header img.logo:hover {
+    box-shadow: 0 0 15px #ff0000, 0 0 30px #ff0000;
+    transform: scale(1.05);
+}
+
+
 
 @keyframes borderMove {
     0% { background-position: 0%; }
