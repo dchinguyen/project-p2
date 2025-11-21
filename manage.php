@@ -47,7 +47,7 @@ if (!isset($_SESSION['logged_in'])) {
 
     echo '
     <main class="login-container">
-        <h2>Cloud Engineer Manager Login</h2>
+        <h2>Manager Login</h2>
         <form method="POST" action="manage.php" class="login-form">
             <input type="text" name="username" placeholder="Username" required class="input-field">
             <input type="password" name="password" placeholder="Password" required class="input-field">
