@@ -21,6 +21,9 @@ include("nav.inc");
 ?>
 
 
+<p style="margin-top:30px;">
+    <a class="button-gold" href="manage.php">Management Login</a>
+</p>
 
   <main id="main">
 

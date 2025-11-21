@@ -76,7 +76,7 @@ mysqli_stmt_execute($stmt);
 $eoi_id = mysqli_insert_id($conn);
 
 echo "
-<main style='width:60%;margin:auto;padding:20px;background:#fff;border:1px solid #ddd;border-radius:8px'>
+<main style='width:60%;margin:auto;padding:20px;background:#fff;border:1px solid #000000ff;border-radius:8px'>
 <h2>Thank you! Your EOI has been submitted😀😀😀.</h2>
 <p><strong>EOI Number:</strong> $eoi_id</p>
 <p><strong>Role:</strong> ".htmlspecialchars($job['title'])." (Ref: ".htmlspecialchars($job['ref']).")</p>
